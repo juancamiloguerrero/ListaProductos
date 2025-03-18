@@ -3,6 +3,14 @@
 import React, { useState } from "react";
 import X from "../elements/icons/X";
 
+const getLocalDate = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`; 
+};
+
 export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,7 +18,9 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
     price: "",
     imageUrl: "",
     category: "Otra",
-    date: new Date().toISOString().split("T")[0],
+    date: getLocalDate(),
+    code: "",
+    quantity: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -30,6 +40,14 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
         setErrors({ ...errors, price: "" });
       }
       setFormData({ ...formData, [name]: formatPrice(value) });
+    } else if (name === "code" || name === "quantity") {
+      // Validar que el código y la cantidad sean números mayores que 0
+      if (value === "" || parseInt(value, 10) <= 0) {
+        setErrors({ ...errors, [name]: `El ${name} debe ser mayor que 0` });
+      } else {
+        setErrors({ ...errors, [name]: "" });
+      }
+      setFormData({ ...formData, [name]: value });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -39,7 +57,22 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validar que el código y la cantidad sean números válidos
+    const numericCode = parseInt(formData.code, 10);
+    const numericQuantity = parseInt(formData.quantity, 10);
     const numericPrice = parseInt(formData.price.replace(/\D/g, ""), 10);
+
+    if (!numericCode || numericCode <= 0) {
+      setErrors({ ...errors, code: "El código debe ser mayor que 0" });
+      return;
+    }
+
+    if (!numericQuantity || numericQuantity <= 0) {
+      setErrors({ ...errors, quantity: "La cantidad debe ser mayor que 0" });
+      return;
+    }
+
     if (!numericPrice || numericPrice <= 0) {
       setErrors({ ...errors, price: "El precio debe ser mayor que 0" });
       return;
@@ -49,6 +82,8 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
       id: new Date().getTime().toString(),
       ...formData,
       price: numericPrice,
+      code: numericCode,
+      quantity: numericQuantity,
     });
 
     setFormData({
@@ -58,6 +93,8 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
       imageUrl: "",
       category: "Otra",
       date: new Date().toISOString().split("T")[0],
+      code: "", // 
+      quantity: "",
     });
 
     onOpenChange(false);
@@ -72,16 +109,60 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
         <h2 className="text-xl font-bold text-gray-900">Agregar nuevo producto</h2>
         <p className="text-sm text-gray-600 mb-6">Complete los detalles para crear un nuevo producto.</p>
         <form onSubmit={handleSubmit} className="space-y-2">
+          {/* Campo: Código */}
+          <label className="text-sm font-semibold">
+            Código <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="code"
+            value={formData.code}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+            required
+          />
+          {errors.code && <p className="text-red-500 text-xs mt-1">{errors.code}</p>}
+
+          {/* Campo: Nombre */}
           <label className="text-sm font-semibold">
             Nombre del producto <span className="text-red-500">*</span>
           </label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
-          
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+            required
+          />
+
+          {/* Campo: Descripción */}
           <label className="text-sm font-semibold">
             Descripción <span className="text-red-500">*</span>
           </label>
-          <textarea name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
-          
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+            required
+          />
+
+          {/* Campo: Cantidad */}
+          <label className="text-sm font-semibold">
+            Cantidad <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+            required
+          />
+          {errors.quantity && <p className="text-red-500 text-xs mt-1">{errors.quantity}</p>}
+
+          {/* Resto del formulario (Precio, Categoría, Imagen URL, Fecha) */}
           <div className="flex gap-4">
             <div className="w-1/2">
               <label className="text-sm font-semibold">
@@ -103,28 +184,61 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
             </div>
             <div className="w-1/2">
               <label className="text-sm font-semibold">Categoría</label>
-              <select name="category" value={formData.category} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded">
-                <option value="categoria1">Categoria 1</option>
-                <option value="categoria2">Categoria 2</option>
-                <option value="categoria3">Categoria 3</option>
-                <option value="categoria4">Categoria 4</option>
-                <option value="categoria5">Categoria 5</option>
-                <option value="categoria6">Otra</option>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-200 rounded"
+              >
+                <option value="Categoria 1">Categoria 1</option>
+                <option value="Categoria 2">Categoria 2</option>
+                <option value="Categoria 3">Categoria 3</option>
+                <option value="Categoria 4">Categoria 4</option>
+                <option value="Categoria 5">Categoria 5</option>
+                <option value="Otra">Otra</option>
               </select>
             </div>
           </div>
-          
+
+          {/* Campo: Imagen URL */}
           <label className="text-sm font-semibold">Imagen URL</label>
-          <input type="text" placeholder="https://example.com/image.jpg" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
-          
+          <input
+            type="text"
+            placeholder="https://example.com/image.jpg"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+          />
+
+          {/* Campo: Fecha */}
           <label className="text-sm font-semibold">
             Fecha <span className="text-red-500">*</span>
           </label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
-          
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-200 rounded"
+            required
+          />
+
+          {/* Botones del formulario */}
           <div className="flex justify-center gap-6 mt-6">
-            <button type="button" onClick={() => onOpenChange(false)} className="px-4 py-2 w-30 bg-white border rounded-lg hover:cursor-pointer transition">Cancelar</button>
-            <button type="submit" className="px-4 py-2 bg-black w-30 text-white rounded-lg hover:cursor-pointer transition">Crear</button>
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              className="px-4 py-2 w-30 bg-white border rounded-lg hover:cursor-pointer transition"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-black w-30 text-white rounded-lg hover:cursor-pointer transition"
+            >
+              Crear
+            </button>
           </div>
         </form>
       </div>
