@@ -22,7 +22,7 @@ export default function ProductList() {
   };
 
   return (
-    <div>
+    <div className="mb-24">
       <Header onAddProduct={() => setDialogOpen(true)} hasProducts={products.length > 0} />
       <div className="mt-6 p-6 max-w-6xl mx-auto">
         {products.length === 0 ? (

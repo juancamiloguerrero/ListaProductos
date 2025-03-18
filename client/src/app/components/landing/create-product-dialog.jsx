@@ -56,7 +56,7 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
       description: "",
       price: "",
       imageUrl: "",
-      category: "Other",
+      category: "Otra",
       date: new Date().toISOString().split("T")[0],
     });
 
