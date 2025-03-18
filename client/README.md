@@ -34,3 +34,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+---
+
+Para la lista productos
+
+
+- vista principal
+- Header (layout) con el título y botón para añadir producto.
+- header simple solo con el titulo.
+- Card con icon, titulo, texto, botón de añadir
+
+- dialog con inputs codigo(number),nombre(text), descripción(text), cantidad(number), creación(date), imagen por url
+
+
+- vista listado de productos
+- cards en formato de cuadricula para visualizar los 
+- filtros para ordenar segun cantidad, creacion, codigo y nombre.
+- Implementar funcionalidad de eliminar un producto y editar desplegando el mismo dialog de crear.
+
+- footer con el nombre del creador, link del repositorio
+- botón de home
+
+- no found page
