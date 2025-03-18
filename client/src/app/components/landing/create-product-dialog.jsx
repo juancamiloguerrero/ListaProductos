@@ -1,78 +1,130 @@
 "use client";
 
 import React, { useState } from "react";
+import X from "../elements/icons/X";
+
 export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    price: "0",
+    price: "",
     imageUrl: "",
-    category: "Other",
-    inStock: true,
+    category: "Otra",
+    date: new Date().toISOString().split("T")[0],
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: "" });
+  const formatPrice = (value) => {
+    const numericValue = value.replace(/[^0-9]/g, "");
+    return numericValue ? parseInt(numericValue, 10).toLocaleString("es-CO") : "";
   };
 
-  const handleCheckboxChange = () => {
-    setFormData({ ...formData, inStock: !formData.inStock });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "price") {
+      if (value === "" || parseInt(value.replace(/\D/g, ""), 10) <= 0) {
+        setErrors({ ...errors, price: "El precio debe ser mayor que 0" });
+      } else {
+        setErrors({ ...errors, price: "" });
+      }
+      setFormData({ ...formData, [name]: formatPrice(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+
+    if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ id: new Date().getTime().toString(), ...formData });
+    const numericPrice = parseInt(formData.price.replace(/\D/g, ""), 10);
+    if (!numericPrice || numericPrice <= 0) {
+      setErrors({ ...errors, price: "El precio debe ser mayor que 0" });
+      return;
+    }
+
+    onSubmit({
+      id: new Date().getTime().toString(),
+      ...formData,
+      price: numericPrice,
+    });
+
     setFormData({
       name: "",
       description: "",
-      price: "0",
+      price: "",
       imageUrl: "",
       category: "Other",
-      inStock: true,
+      date: new Date().toISOString().split("T")[0],
     });
+
     onOpenChange(false);
   };
 
   return open ? (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 dark:bg-black/80">
-
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative border border-gray-200">
-        <button onClick={() => onOpenChange(false)} className="absolute top-4 right-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"><path fill="#000" d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z" strokeWidth={0.5} stroke="#000"></path></svg>
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative border border-gray-200">
+        <button onClick={() => onOpenChange(false)} className="absolute top-5 right-5 cursor-pointer">
+          <X />
         </button>
-        <h2 className="text-lg font-bold text-gray-900">Add New Product</h2>
-        <p className="text-sm text-gray-600 mb-4">Fill in the details to create a new product.</p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" name="name" placeholder="Product Name *" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded" required />
-          <textarea name="description" placeholder="Description *" value={formData.description} onChange={handleChange} className="w-full p-2 border rounded" required />
-          <div className="flex items-center gap-2">
-            <input type="number" name="price" min="0" value={formData.price} onChange={handleChange} className="p-2 border rounded w-full" required />
-            <select name="category" value={formData.category} onChange={handleChange} className="p-2 border rounded">
-              <option value="Electronics">Electronics</option>
-              <option value="Clothing">Clothing</option>
-              <option value="Home">Home</option>
-              <option value="Books">Books</option>
-              <option value="Sports">Sports</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <input type="text" name="imageUrl" placeholder="https://example.com/image.jpg" value={formData.imageUrl} onChange={handleChange} className="w-full p-2 border rounded" />
-          <div className="flex items-center gap-2">
-            <label className="flex items-center cursor-pointer">
-              <input type="checkbox" checked={formData.inStock} onChange={handleCheckboxChange} className="hidden" />
-              <div className={`w-6 h-6 flex items-center justify-center border-2 rounded ${formData.inStock ? 'bg-black border-black' : 'border-gray-400'}`}>
-                {formData.inStock && <span className="text-white font-bold">✔</span>}
+        <h2 className="text-xl font-bold text-gray-900">Agregar nuevo producto</h2>
+        <p className="text-sm text-gray-600 mb-6">Complete los detalles para crear un nuevo producto.</p>
+        <form onSubmit={handleSubmit} className="space-y-2">
+          <label className="text-sm font-semibold">
+            Nombre del producto <span className="text-red-500">*</span>
+          </label>
+          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
+          
+          <label className="text-sm font-semibold">
+            Descripción <span className="text-red-500">*</span>
+          </label>
+          <textarea name="description" value={formData.description} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
+          
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <label className="text-sm font-semibold">
+                Precio ($) <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500">COP</span>
+                <input
+                  type="text"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="0"
+                  className="w-full p-2 pl-12 border border-gray-200 rounded"
+                  required
+                />
               </div>
-            </label>
-            <span>In Stock</span>
+              {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
+            </div>
+            <div className="w-1/2">
+              <label className="text-sm font-semibold">Categoría</label>
+              <select name="category" value={formData.category} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded">
+                <option value="categoria1">Categoria 1</option>
+                <option value="categoria2">Categoria 2</option>
+                <option value="categoria3">Categoria 3</option>
+                <option value="categoria4">Categoria 4</option>
+                <option value="categoria5">Categoria 5</option>
+                <option value="categoria6">Otra</option>
+              </select>
+            </div>
           </div>
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={() => onOpenChange(false)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-            <button type="submit" className="px-4 py-2 bg-black text-white rounded">Create Product</button>
+          
+          <label className="text-sm font-semibold">Imagen URL</label>
+          <input type="text" placeholder="https://example.com/image.jpg" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
+          
+          <label className="text-sm font-semibold">
+            Fecha <span className="text-red-500">*</span>
+          </label>
+          <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
+          
+          <div className="flex justify-center gap-6 mt-6">
+            <button type="button" onClick={() => onOpenChange(false)} className="px-4 py-2 w-30 bg-white border rounded-lg hover:cursor-pointer transition">Cancelar</button>
+            <button type="submit" className="px-4 py-2 bg-black w-30 text-white rounded-lg hover:cursor-pointer transition">Crear</button>
           </div>
         </form>
       </div>

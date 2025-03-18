@@ -1,59 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lista de Productos
 
-## Getting Started
+Este es un proyecto desarrollado con [Next.js](https://nextjs.org), utilizando estilos de [Tailwind CSS](https://tailwindcss.com) y elementos gráficos de [Iconify](https://iconify.design/).
 
-First, run the development server:
+## Descripción
+La interfaz gráfica cuenta con tres vistas principales:
+1. **Sin productos**: Pantalla inicial sin elementos agregados.
+2. **Cuadro de diálogo para agregar productos**.
+3. **Visualización en formato de cuadrícula** con tarjetas que muestran la información del producto.  
+   - Al hacer clic en los tres puntos rojos, se puede eliminar un producto.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Capturas de pantalla
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Vista sin productos
+![Vista sin productos](public/readme/l1.png)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Cuadro de diálogo para añadir productos
+![Cuadro de diálogo](public/readme/l2.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Visualización de productos en cuadrícula
+![Vista en cuadrícula](public/readme/l3.png)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Despliegue
+Este proyecto ha sido desplegado en [Vercel](https://vercel.com).
 
 ---
-
-Para la lista productos
-
-
-- vista principal
-- Header (layout) con el título y botón para añadir producto.
-- header simple solo con el titulo.
-- Card con icon, titulo, texto, botón de añadir
-
-- dialog con inputs codigo(number),nombre(text), descripción(text), cantidad(number), creación(date), imagen por url
-
-
-- vista listado de productos
-- cards en formato de cuadricula para visualizar los 
-- filtros para ordenar segun cantidad, creacion, codigo y nombre.
-- Implementar funcionalidad de eliminar un producto y editar desplegando el mismo dialog de crear.
-
-- footer con el nombre del creador, link del repositorio
-- botón de home
-
-- no found page
+📌 **Tecnologías utilizadas:**
+- Next.js
+- Tailwind CSS
+- Iconify
+- Vercel (para el despliegue)
