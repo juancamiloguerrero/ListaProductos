@@ -1,6 +1,6 @@
 # Lista de Productos
 
-Este es un proyecto desarrollado con [Next.js](https://nextjs.org), utilizando estilos de [Tailwind CSS](https://tailwindcss.com) y elementos gráficos de [Iconify](https://iconify.design/).
+Este es un proyecto desarrollado con [Next.js](https://nextjs.org), utilizando estilos de [Tailwind CSS](https://tailwindcss.com) y elementos gráficos de [Iconify](https://iconify.design/). Prueba para Desarrollador Junior – React / Next.
 
 ## Descripción
 La interfaz gráfica cuenta con tres vistas principales:
