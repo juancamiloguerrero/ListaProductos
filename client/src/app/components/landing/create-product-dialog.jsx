@@ -41,7 +41,6 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
       }
       setFormData({ ...formData, [name]: formatPrice(value) });
     } else if (name === "code" || name === "quantity") {
-      // Validar que el código y la cantidad sean números mayores que 0
       if (value === "" || parseInt(value, 10) <= 0) {
         setErrors({ ...errors, [name]: `El ${name} debe ser mayor que 0` });
       } else {
@@ -93,7 +92,7 @@ export default function CreateProductDialog({ open, onOpenChange, onSubmit }) {
       imageUrl: "",
       category: "Otra",
       date: new Date().toISOString().split("T")[0],
-      code: "", // 
+      code: "",
       quantity: "",
     });
 
