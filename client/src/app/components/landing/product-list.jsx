@@ -24,7 +24,10 @@ export default function ProductList() {
   return (
     <div className="mb-24">
       <Header onAddProduct={() => setDialogOpen(true)} hasProducts={products.length > 0} />
+
       <div className="mt-6 p-6 max-w-6xl mx-auto">
+{/* Poner acá el filtro */}
+
         {products.length === 0 ? (
           <div className="flex flex-col items-center justify-center border border-dashed rounded-lg p-12 shadow-sm bg-gray-50">
             <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full mb-4">
