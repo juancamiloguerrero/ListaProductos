@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Lista Productos",
+  title: "Lista de productos",
   description: "Prueba para Desarrollador Junior – React / Next",
 };
 
