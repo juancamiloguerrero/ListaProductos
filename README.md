@@ -12,13 +12,13 @@ La interfaz gráfica cuenta con tres vistas principales:
 ## Capturas de pantalla
 
 ### Vista sin productos
-![Vista sin productos](public/readme/l1.png)
+![Vista sin productos](/client/public/readme/l1.png)
 
 ### Cuadro de diálogo para añadir productos
-![Cuadro de diálogo](public/readme/l2.png)
+![Cuadro de diálogo](/client/public/readme/l2.png)
 
 ### Visualización de productos en cuadrícula
-![Vista en cuadrícula](public/readme/l3.png)
+![Vista en cuadrícula](/client/public/readme/l3.png)
 
 ## Despliegue
 Este proyecto ha sido desplegado en [Vercel](https://vercel.com).
